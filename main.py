@@ -6,6 +6,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("Arrow Game")
+board = Board(6, 6, 100, (100, 100))
 
 
 running = True
@@ -17,7 +18,6 @@ while running:
 
     screen.fill((255, 255, 255))
 
-    board = Board(6, 6, 100, (100, 100))
     board.draw(screen)
 
     pygame.display.flip()
