@@ -7,6 +7,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((800, 800))
 pygame.display.set_caption("Arrow Game")
+clock = pygame.time.Clock()
 board = Board(6, 6, 100, (100, 100))
 
 
@@ -22,8 +23,9 @@ while running:
             if cell is not None:
                 row, col = cell
                 arrow = board.get_arrow(row, col)
-                if arrow is not None:
-                    print("Clicked arrow at (",row,",",col,") facing ",arrow.direction)
+                if arrow is not None and board.can_arrow_exit(row, col):
+                    board.set_arrow(row, col, None)
+
 
     screen.fill((255, 255, 255))
 
@@ -31,6 +33,6 @@ while running:
 
     pygame.display.flip()
 
-    pygame.time.Clock().tick(60)
+    clock.tick(60)
 
 pygame.quit()

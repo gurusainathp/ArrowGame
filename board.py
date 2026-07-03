@@ -28,7 +28,7 @@ class Board:
         for i in range(self.rows):
             for j in range(self.cols):
                 if self.grid[i][j] is not None:
-                    cell_rect = pygame.Rect(startX + i * self.size, startY + j * self.size, self.size, self.size)
+                    cell_rect = pygame.Rect(startX + j * self.size, startY + i * self.size, self.size, self.size)
                     self.grid[i][j].draw(screen, cell_rect)
 
     def get_cell_from_mouse(self, pos):
@@ -52,3 +52,15 @@ class Board:
 
     def set_arrow(self, row, col, arrow):
         self.grid[row][col] = arrow
+
+    def can_arrow_exit(self, row, col):
+        arrow = self.get_arrow(row, col)
+        dr, dc = arrow.direction.value
+
+        while 0 <= row + dr < self.rows and 0 <= col + dc < self.cols:
+            row += dr
+            col += dc
+            if self.grid[row][col] is not None:
+                return False
+
+        return True
