@@ -18,14 +18,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            cell = board.get_cell_from_mouse(pos)
-            if cell is not None:
-                row, col = cell
-                arrow = board.get_arrow(row, col)
-                if arrow is not None and board.can_arrow_exit(row, col):
-                    board.set_arrow(row, col, None)
-
+            board.handle_click(event.pos)
 
     screen.fill((255, 255, 255))
 

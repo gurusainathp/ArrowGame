@@ -64,3 +64,11 @@ class Board:
                 return False
 
         return True
+
+    def handle_click(self, pos):
+        cell = self.get_cell_from_mouse(pos)
+        if cell is not None:
+            row, col = cell
+            arrow = self.get_arrow(row, col)
+            if arrow is not None and self.can_arrow_exit(row, col):
+                self.set_arrow(row, col, None)
