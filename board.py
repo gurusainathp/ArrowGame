@@ -35,12 +35,20 @@ class Board:
         x, y = pos
         startX, startY = self.startPos
 
-        row = (startX - x) // self.rows
-        col = (startY - y) // self.cols
+        col = (x - startX) // self.size
+        row = (y - startY) // self.size
 
+        if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
+            return None
         return row, col
 
     def populate_test_grid(self):
         for i in range(self.rows):
             for j in range(self.cols):
                 self.grid[i][j] = Arrow(random.choice(list(Direction)) , self.size)
+
+    def get_arrow(self, row, col):
+        return self.grid[row][col]
+
+    def set_arrow(self, row, col, arrow):
+        self.grid[row][col] = arrow
