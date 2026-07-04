@@ -1,14 +1,16 @@
 import pygame
 
-from arrow import Arrow
 from board import Board
 
 pygame.init()
 
-screen = pygame.display.set_mode((800, 800))
+rows = 4
+cols = 4
+cell_size = 100
+screen = pygame.display.set_mode(((cols + 2) * cell_size, (rows + 2) * cell_size))
 pygame.display.set_caption("Arrow Game")
 clock = pygame.time.Clock()
-board = Board(6, 6, 100, (100, 100))
+board = Board(rows, cols, cell_size, (cell_size, cell_size))
 
 
 running = True
