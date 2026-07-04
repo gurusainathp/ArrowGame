@@ -3,6 +3,7 @@ from arrow import Arrow
 from Direction import Direction
 from numpy import random
 
+
 class Board:
     def __init__(self, rows, cols, cell_size, startPos):
         self.rows = rows
@@ -22,12 +23,12 @@ class Board:
         startX, startY = self.startPos
 
         for i in range(self.rows + 1):
-            pygame.draw.line(screen, (0, 0, 0), (startX + i * self.cell_size, startY),
-                             (startX + i * self.cell_size, startY + self.cols * self.cell_size))
+            pygame.draw.line(screen, (0, 0, 0), (startX, startY + i * self.cell_size),
+                             (startX + self.cols * self.cell_size, startY + i * self.cell_size))
 
         for j in range(self.cols + 1):
-            pygame.draw.line(screen, (0, 0, 0), (startX, startY + j * self.cell_size),
-                             (startX + self.rows * self.cell_size, startY + j * self.cell_size))
+            pygame.draw.line(screen, (0, 0, 0), (startX + j * self.cell_size, startY),
+                             (startX + j * self.cell_size, startY + self.rows * self.cell_size))
 
         for i in range(self.rows):
             for j in range(self.cols):
