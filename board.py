@@ -33,8 +33,10 @@ class Board:
         for i in range(self.rows):
             for j in range(self.cols):
                 if self.grid[i][j] is not None:
-                    cell_rect = pygame.Rect(startX + j * self.cell_size, startY + i * self.cell_size, self.cell_size, self.cell_size)
-                    self.grid[i][j].draw(screen, cell_rect)
+                    if self.grid[i][j].is_animating:
+                        self.grid[i][j].draw(screen, self.grid[i][j].pixel_x, self.grid[i][j].pixel_y)
+                    elif -self.grid[i][j].size < self.grid[i][j].pixel_x < screen.get_width() and -self.grid[i][j].size < self.grid[i][j].pixel_y < screen.get_height():
+                        self.grid[i][j].draw(screen, startX + j * self.cell_size, startY + i * self.cell_size)
 
         if self.has_won():
             screen.blit(self.win_text, self.win_text_rect)
@@ -73,7 +75,7 @@ class Board:
         while 0 <= row + dr < self.rows and 0 <= col + dc < self.cols:
             row += dr
             col += dc
-            if self.grid[row][col] is not None:
+            if self.grid[row][col] is not None and not self.grid[row][col].is_animating:
                 return False
 
         return True
@@ -84,8 +86,19 @@ class Board:
             row, col = cell
             arrow = self.get_arrow(row, col)
             if arrow is not None and self.can_arrow_exit(row, col):
-                self.set_arrow(row, col, None)
-                self.arrow_count -= 1
+                startX, startY = self.startPos
+                arrow.start_animation(startX + col * self.cell_size, startY + row * self.cell_size)
+
 
     def has_won(self):
         return self.arrow_count == 0
+
+    def update(self, screen_width, screen_height):
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if self.grid[i][j] is not None:
+                    if self.grid[i][j].is_animating:
+                        self.grid[i][j].update(screen_width, screen_height)
+                    elif self.grid[i][j].finished:
+                        self.set_arrow(i, j, None)
+                        self.arrow_count -= 1
