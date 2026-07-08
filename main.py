@@ -1,9 +1,7 @@
 import pygame
-from numpy.random.mtrand import random
 
 from board import Board
-from arrow import Arrow
-from direction import Direction
+from level_loader import load_level
 
 pygame.init()
 
@@ -14,7 +12,10 @@ screen = pygame.display.set_mode(((cols + 2) * cell_size, (rows + 2) * cell_size
 pygame.display.set_caption("Arrow Game")
 clock = pygame.time.Clock()
 
-grid = [[Arrow(Direction.UP) for _ in range(cols)] for _ in range(rows)]
+grid = load_level("levels/level1.txt")
+
+if grid is None:
+    exit("Invalid level file")
 
 board = Board(screen.get_width(), screen.get_height(), grid)
 
