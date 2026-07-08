@@ -1,6 +1,9 @@
 import pygame
+from numpy.random.mtrand import random
 
 from board import Board
+from arrow import Arrow
+from Direction import Direction
 
 pygame.init()
 
@@ -10,7 +13,10 @@ cell_size = 50
 screen = pygame.display.set_mode(((cols + 2) * cell_size, (rows + 2) * cell_size))
 pygame.display.set_caption("Arrow Game")
 clock = pygame.time.Clock()
-board = Board(rows, cols, cell_size, (cell_size, cell_size))
+
+grid = [[Arrow(Direction.UP) for _ in range(cols)] for _ in range(rows)]
+
+board = Board(screen, grid)
 
 
 running = True

@@ -1,23 +1,34 @@
 import pygame
-from arrow import Arrow
-from Direction import Direction
-from numpy import random
+import numpy as np
 
 
 class Board:
-    def __init__(self, rows, cols, cell_size, startPos):
-        self.rows = rows
-        self.cols = cols
-        self.cell_size = cell_size
-        self.startPos = startPos
-        self.grid = [[None for _ in range(cols)] for _ in range(rows)]
-        self.arrow_count = 0
+    def __init__(self, screen, grid):
+        self.screen = screen
+        self.grid = grid
+        self.rows = self.calculate_rows_from_grid()
+        self.cols = self.calculate_cols_from_grid()
+        self.cell_size = self.calculate_cell_size()
+        self.startPos = self.calculate_starting_pos()
+        self.arrow_count = self.calculate_arrow_count()
         self.win_font = pygame.font.SysFont("Arial", self.cell_size)
         self.win_text = self.win_font.render("YOU WIN!!!", True, (0, 0, 0))
-        self.win_text_rect = self.win_text.get_rect(center=(((cols + 2) * cell_size) / 2, ((rows + 2) * cell_size) / 2))
+        self.win_text_rect = self.win_text.get_rect(center=(screen.get_width() / 2, screen.get_height() / 2))
 
-        self.populate_test_grid()
+    def calculate_rows_from_grid(self):
+        return len(self.grid)
 
+    def calculate_cols_from_grid(self):
+        return len(self.grid[0])
+
+    def calculate_cell_size(self):
+        return min(self.screen.get_width() // (self.rows + 2), self.screen.get_width() // (self.cols + 2))
+
+    def calculate_starting_pos(self):
+        return (self.screen.get_width() // 2) - int((self.cols / 2) * self.cell_size), (self.screen.get_height() // 2) - int((self.rows / 2) * self.cell_size)
+
+    def calculate_arrow_count(self):
+        return np.count_nonzero(self.grid)
 
     def draw(self, screen):
         startX, startY = self.startPos
@@ -32,11 +43,13 @@ class Board:
 
         for i in range(self.rows):
             for j in range(self.cols):
-                if self.grid[i][j] is not None:
-                    if self.grid[i][j].is_animating:
-                        self.grid[i][j].draw(screen, self.grid[i][j].pixel_x, self.grid[i][j].pixel_y)
-                    elif -self.grid[i][j].size < self.grid[i][j].pixel_x < screen.get_width() and -self.grid[i][j].size < self.grid[i][j].pixel_y < screen.get_height():
-                        self.grid[i][j].draw(screen, startX + j * self.cell_size, startY + i * self.cell_size)
+                arrow = self.grid[i][j]
+                if arrow is not None:
+                    arrow.set_arrow_size(self.cell_size)
+                    if arrow.is_animating:
+                        arrow.draw(screen, arrow.pixel_x, arrow.pixel_y)
+                    elif -arrow.size < arrow.pixel_x < screen.get_width() and -arrow.size < arrow.pixel_y < screen.get_height():
+                        arrow.draw(screen, startX + j * self.cell_size, startY + i * self.cell_size)
 
         if self.has_won():
             screen.blit(self.win_text, self.win_text_rect)
@@ -45,21 +58,12 @@ class Board:
     def get_cell_from_mouse(self, pos):
         x, y = pos
         startX, startY = self.startPos
-
         col = (x - startX) // self.cell_size
         row = (y - startY) // self.cell_size
 
         if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
             return None
         return row, col
-
-    def populate_test_grid(self):
-        for i in range(self.rows):
-            for j in range(self.cols):
-                arrow = random.choice([Arrow(random.choice(list(Direction)) , self.cell_size), None])
-                if arrow is not None:
-                    self.set_arrow(i, j, arrow)
-                    self.arrow_count += 1
 
 
     def get_arrow(self, row, col):

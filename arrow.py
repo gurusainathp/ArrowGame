@@ -11,15 +11,19 @@ class Arrow:
         Direction.RIGHT: "→"
     }
 
-    def __init__(self, direction, size):
+    def __init__(self, direction):
         self.pixel_x = 0
         self.pixel_y = 0
         self.is_animating = False
         self.finished = False
         self.speed = 5
         self.direction = direction
+        self.size = 0
+        self.font = pygame.font.SysFont("segoeuisymbol", 100)
+
+    def set_arrow_size(self, size):
         self.size = size
-        self.font = pygame.font.SysFont("segoeuisymbol",self.size)
+        self.font = pygame.font.SysFont("segoeuisymbol", size)
 
     def draw(self, screen, pixel_x, pixel_y):
         box_rect = pygame.Rect(pixel_x, pixel_y, self.size, self.size)
