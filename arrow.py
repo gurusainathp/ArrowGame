@@ -1,7 +1,7 @@
 from enum import Enum
 
 import pygame
-from Direction import Direction
+from direction import Direction
 
 class Arrow:
     SYMBOLS = {
@@ -21,11 +21,11 @@ class Arrow:
         self.size = 0
         self.font = pygame.font.SysFont("segoeuisymbol", 100)
 
-    def set_arrow_size(self, size):
-        self.size = size
-        self.font = pygame.font.SysFont("segoeuisymbol", size)
 
-    def draw(self, screen, pixel_x, pixel_y):
+    def draw(self, screen, pixel_x, pixel_y, size):
+        if self.size != size:
+            self.size = size
+            self.font = pygame.font.SysFont("segoeuisymbol", self.size)
         box_rect = pygame.Rect(pixel_x, pixel_y, self.size, self.size)
         char = self.SYMBOLS[self.direction]
         text = self.font.render(char, True, (0, 0, 0))

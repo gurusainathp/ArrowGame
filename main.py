@@ -3,7 +3,7 @@ from numpy.random.mtrand import random
 
 from board import Board
 from arrow import Arrow
-from Direction import Direction
+from direction import Direction
 
 pygame.init()
 
@@ -16,8 +16,10 @@ clock = pygame.time.Clock()
 
 grid = [[Arrow(Direction.UP) for _ in range(cols)] for _ in range(rows)]
 
-board = Board(screen, grid)
+board = Board(screen.get_width(), screen.get_height(), grid)
 
+#Initial Grid
+board.draw_initial_arrow_grid(screen)
 
 running = True
 
