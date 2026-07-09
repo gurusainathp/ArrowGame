@@ -43,7 +43,7 @@ class Board:
                 if arrow is not None:
                     if arrow.is_animating:
                         arrow.draw(screen, arrow.pixel_x, arrow.pixel_y, self.cell_size)
-                    elif -arrow.size < arrow.pixel_x < screen.get_width() and -arrow.size < arrow.pixel_y < screen.get_height():
+                    elif not arrow.finished:
                         arrow.draw(screen, startX + j * self.cell_size, startY + i * self.cell_size, self.cell_size)
 
         if self.has_won():
@@ -59,14 +59,6 @@ class Board:
         if row < 0 or row >= self.rows or col < 0 or col >= self.cols:
             return None
         return row, col
-
-    def draw_initial_arrow_grid(self, screen):
-        startX, startY = self.startPos
-        for i in range(self.rows):
-            for j in range(self.cols):
-                arrow = self.grid[i][j]
-                if arrow is not None:
-                    arrow.draw(screen, startX + j * self.cell_size, startY + i * self.cell_size, self.cell_size)
 
     def get_arrow(self, row, col):
         return self.grid[row][col]
