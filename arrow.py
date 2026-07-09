@@ -26,6 +26,7 @@ class Arrow:
         if self.size != size:
             self.size = size
             self.font = pygame.font.SysFont("segoeuisymbol", self.size)
+            self.speed = self.size // 10
         box_rect = pygame.Rect(pixel_x, pixel_y, self.size, self.size)
         char = self.SYMBOLS[self.direction]
         text = self.font.render(char, True, (0, 0, 0))

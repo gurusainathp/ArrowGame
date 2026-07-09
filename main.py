@@ -5,14 +5,11 @@ from level_loader import load_level
 
 pygame.init()
 
-rows = 4
-cols = 4
-cell_size = 50
-screen = pygame.display.set_mode(((cols + 2) * cell_size, (rows + 2) * cell_size))
+screen = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("Arrow Game")
 clock = pygame.time.Clock()
 
-grid = load_level("levels/level1.txt")
+grid = load_level("levels/level1.csv")
 
 if grid is None:
     exit("Invalid level file")
