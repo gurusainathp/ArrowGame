@@ -13,10 +13,6 @@ class Board:
 
         self.calculate_layout()
 
-        self.win_font = pygame.font.SysFont("Arial", self.cell_size)
-        self.win_text = self.win_font.render("YOU WIN!!!", True, (0, 0, 0))
-        self.win_text_rect = self.win_text.get_rect(center=(screen_width / 2, screen_height / 2))
-
     def calculate_layout(self):
         self.rows = len(self.grid)
         self.cols = len(self.grid[0])
@@ -45,9 +41,6 @@ class Board:
                         arrow.draw(screen, arrow.pixel_x, arrow.pixel_y, self.cell_size)
                     elif not arrow.finished:
                         arrow.draw(screen, startX + j * self.cell_size, startY + i * self.cell_size, self.cell_size)
-
-        if self.has_won():
-            screen.blit(self.win_text, self.win_text_rect)
 
 
     def get_cell_from_mouse(self, pos):
